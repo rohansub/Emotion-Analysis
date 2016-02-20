@@ -4,6 +4,8 @@ from flask import g, render_template, redirect, request, session, url_for
 from app import app, db
 from models import User
 
+from TweetMiner import mineTweets
+
 # Facebook app details
 FB_APP_ID = '829452593844042'
 FB_APP_NAME = 'FriendInNeed'
@@ -81,7 +83,8 @@ def get_current_user():
         postInfo = post['data'];
         postList = []
         for d in postInfo:
-            postList.append(d['message'])
+            postList.append((d['message'], d['created_time']))
+        tweetList = mineTweets('djkhaled')
         # Add the user to the current session
         session['user'] = dict(name=user.name, profile_url=user.profile_url,
                                id=user.id, access_token=user.access_token)
