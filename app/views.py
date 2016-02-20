@@ -78,7 +78,7 @@ def get_current_user():
         elif user.access_token != result['access_token']:
             # If an existing user, update the access token
             user.access_token = result['access_token']
-        graph = GraphAPI(access_token='CAALyYfs2z0oBAJ1CjWIwLZCX5WKuiYzKZAJl2gzvZApGCPSfATqAEmkr9LWKKJS9VWQpKJ2vZBpxuQ9HqqubtX5j1WoRuZBa7kOfIYJ1fV3BEaQS5dyZAYF30j2otN3rzpD9ZA1cOVuZAM3ZBQAUQZCgSTpOb8o3M8SZBFhKyMnn0BvZAZCZBKNad3TrpBcFMVA7RVCBuGbXKBxAKy4L8FeotS3uyH1aLTGlGAZAQ4ZD')
+        graph = GraphAPI(access_token='CAALyYfs2z0oBAN6TdycYOUozdZB4uCH7pi3sfSI7EZCHaMUhusVfWZAU6UZCezTGa5Hew8x0F9uRPHC2IIWZBjbDbZAZBnT2oEKPdo819B18nZBTUrglDS17xdWD0cWYVmNA3NGOcMPeI3zOMrIkdCD08ZAbMKWV7yZAOZBd9wX5xtoP8myOikN4yme')
         post = graph.get_object('/me/'+'posts')
         postInfo = post['data'];
         postList = []
