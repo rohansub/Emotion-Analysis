@@ -1,210 +1,121 @@
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    text-align: center;
-    background-color: #EBF4FA;
-    color: #003366;
+body{
+  background-color: #AEEAFF;
 }
-.navbar{
-  background-color: #003366;
-  color: #2e7eb8;
-
+.login-box{
+  position:relative;
+  margin: 10px auto;
+  width: 500px;
+  height: 380px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
+-moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
+box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
 }
-a.hover {
-  color: #5ca3d6;
+.lb-header{
+  position:relative;
+  color: #00415d;
+  margin: 5px 5px 10px 5px;
+  padding-bottom:10px;
+  border-bottom: 1px solid #eee;
+  text-align:center;
+  height:28px;
 }
-
-.center {
-    margin: auto;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    width: 50%;
-    height: 50%;
-    min-width: 200px;
-    max-width: 400px;
-    padding: 40px;
+.lb-header a{
+  margin: 0 25px;
+  padding: 0 20px;
+  text-decoration: none;
+  color: #666;
+  font-weight: bold;
+  font-size: 15px;
+  -webkit-transition: all 0.1s linear;
+  -moz-transition: all 0.1s linear;
+  transition: all 0.1s linear;
 }
-
-.circle-image {
-    width: 200px;
-    height: 200px;
-    border-radius: 100%;
-    display: inline;;
+.lb-header .active{
+  color: #029f5b;
+  font-size: 18px;
 }
-
-/* GLOBAL STYLES
--------------------------------------------------- */
-/* Padding below the footer and lighter body text */
-section {
-    padding-top: 5vh;
-    margin-top: -5vh;
+.social-login{
+  position:relative;
+  float: left;
+  width: 100%;
+  height:auto;
+  padding: 10px 0 15px 0;
+  border-bottom: 1px solid #eee;
 }
-
-
-container p {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%)
+.social-login a{
+  position:relative;
+  float: left;
+  width:calc(40% - 8px);
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+  padding: 12px;
+  border-radius: 2px;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin: 0 3%;
+  text-align:center;
 }
-
-.header {
-
-    height: 100vh;
-    background-size: cover;
+.social-login a i{
+  position: relative;
+  float: left;
+  width: 20px;
+  top: 2px;
 }
-
-.textcenter {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 14px;
+.social-login a:first-child{
+  background-color: #49639F;
 }
-
-img {
-    padding-top: 2px;
-    padding-bottom: 2px;
+.social-login a:last-child{
+  background-color: #DF4A32;
 }
-
-.overlay {
+.email-login,.email-signup{
+  position:relative;
+  float: left;
+  width: 100%;
+  height:auto;
+  margin-top: 20px;
+  text-align:center;
 }
-
-.clear {
-    clear: both;
+.u-form-group{
+  width:100%;
+  margin-bottom: 10px;
 }
-
-.test {
-    width: 100vw;
-    text-align: center;
+.u-form-group input[type="email"],
+.u-form-group input[type="password"]{
+  width: calc(50% - 22px);
+  height:45px;
+  outline: none;
+  border: 1px solid #ddd;
+  padding: 0 10px;
+  border-radius: 2px;
+  color: #333;
+  font-size:0.8rem;
+  -webkit-transition:all 0.1s linear;
+  -moz-transition:all 0.1s linear;
+  transition:all 0.1s linear;
 }
-
-.test a {
-    display: block;
-    float: left;
-    width: 33%;
-
-/* CUSTOMIZE THE NAVBAR
--------------------------------------------------- */
-
-/* Special class on .container surrounding .navbar, used for positioning it into place. */
-.navbar-wrapper {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 20;
+.u-form-group input:focus{
+  border-color: #358efb;
 }
-
-/* Flip around the padding for proper display in narrow viewports */
-.navbar-wrapper > .container {
-    padding-right: 0;
-    padding-left: 0;
+.u-form-group button{
+  width:50%;
+  background-color: #1CB94E;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 14px 0;
+  border-radius: 2px;
+  text-transform: uppercase;
 }
-
-.navbar-wrapper .navbar {
-    padding-right: 15px;
-    padding-left: 15px;
-}
-
-.navbar-wrapper .navbar .container {
-    width: auto;
-}
-
-/* CUSTOMIZE THE CAROUSEL
--------------------------------------------------- */
-
-/* Carousel base class */
-.carousel {
-    height: 500px;
-    margin-bottom: 60px;
-}
-
-/* Since positioning the image, we need to help out the caption */
-.carousel-caption {
-    z-index: 10;
-}
-
-/* Declare heights because of positioning of img element */
-.carousel .item {
-    height: 500px;
-    background-color: #777;
-}
-
-.carousel-inner > .item > img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    height: 500px;
-}
-
-/* MARKETING CONTENT
--------------------------------------------------- */
-
-/* Center align the text within the three columns below the carousel */
-.marketing .col-lg-4 {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.marketing h2 {
-    font-weight: normal;
-}
-
-.marketing .col-lg-4 p {
-    margin-right: 10px;
-    margin-left: 10px;
-}
-
-/* Featurettes
-------------------------- */
-
-.featurette-divider {
-}
-
-/* Thin out the marketing headings */
-.featurette-heading {
-    font-weight: 300;
-    line-height: 1;
-    letter-spacing: -1px;
-}
-
-/* RESPONSIVE CSS
--------------------------------------------------- */
-
-@media (min-width: 768px) {
-    /* Navbar positioning foo */
-    .navbar-wrapper {
-        margin-top: 20px;
-    }
-
-    .navbar-wrapper .container {
-        padding-right: 15px;
-        padding-left: 15px;
-    }
-
-    .navbar-wrapper .navbar {
-        padding-right: 0;
-        padding-left: 0;
-    }
-
-    /* The navbar becomes detached from the top, so we round the corners */
-    .navbar-wrapper .navbar {
-        border-radius: 4px;
-    }
-
-    /* Bump up size of carousel content */
-    .carousel-caption p {
-        margin-bottom: 20px;
-        font-size: 21px;
-        line-height: 1.4;
-    }
-
-    .featurette-heading {
-        font-size: 50px;
-    }
-}
-
-@media (min-width: 992px) {
-    .featurette-heading {
-        margin-top: 0px;
-    }
+.forgot-password{
+  width:50%;
+  text-align: left;
+  text-decoration: underline;
+  color: #888;
+  font-size: 0.75rem;
 }
