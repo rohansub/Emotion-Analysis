@@ -43,55 +43,61 @@
         </div>
       </div>
     </div>
-    <hr style="margin: 0px; padding: 0px; border-color: #604020; color: #003366; size = '10'"">
+    <hr style="margin: 0px; padding: 0px; border-color: #604020; color: #003366; size = '10'">
   </div>
 </section>
 
 <section id = "Login">
-  <div class = "container">
     <div style="min-height: 95vh; padding-top: 30vh; padding-bottom: 30vh">
-      <div class="row featurette">
-        <div class="col-md-6">
-          <h2>Signup </h2>
-          <hr style="margin: 0px; padding: 0px; border-color: #604020; color: #003366">
-
-        </div>
-      </div>
-      <div class = "row-featurette">
-        <div class="col-md-5 col-md-push-1">
-          <form>
-            <h3>First Name: </h3><input type="text" name="firstname">
-            <h3><br>Last Name: </h3><input type = "text" name = "lastname">
-            <h3><br>Twitter Username: </h3><input type = "text" name = "twitterhandle">
-          </form>
-          <h3><br>Connect account with Facebook: </h3>
-          <div class="fb-login-button" data-size='xlarge' data-scope="public_profile">
-            Sign in
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="login-box">
+  <div class="lb-header">
+    <a href="#Login" class="active" id="login-box-link">Login</a>
+    <a href="#Login" id="signup-box-link">Sign Up</a>
   </div>
+  <form class="email-login">
+    <p>Use facebook to login and view sentiment data.</p>
+    <div class="fb-login-button" data-size='xlarge' data-scope="public_profile">
+      Login
+    </div>
+
+
+  </form>
+  <form class="email-signup">
+    <div class="u-form-group">
+      <input type="Name" placeholder="First Name" />
+    </div>
+    <div class="u-form-group">
+      <input type="Name" placeholder="Last Name" />
+    </div>
+    <div class="u-form-group">
+      <input type="TwitterHandle" placeholder="Twitter Username" />
+    </div>
+    <div class="fb-login-button" data-size='xlarge' data-scope="public_profile">
+      Signup
+    </div>
+  </form>
+</div>
 </div>
 </section>
 </div>
-<!-- Animated Scrolling -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript">
-$(function () {
-  $('.smoothScroll').click(function () {
-    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-      if (target.length) {
-        $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 1000);
-        return false;
-      }
-    }
+  $(".email-signup").hide();
+  $("#signup-box-link").click(function(){
+    $(".email-login").fadeOut(100);
+    $(".email-signup").delay(100).fadeIn(100);
+    $("#login-box-link").removeClass("active");
+    $("#signup-box-link").addClass("active");
   });
-});
+  $("#login-box-link").click(function(){
+    $(".email-login").delay(100).fadeIn(100);;
+    $(".email-signup").fadeOut(100);
+    $("#login-box-link").addClass("active");
+    $("#signup-box-link").removeClass("active");
+  });
 </script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 
 {% endblock %}
