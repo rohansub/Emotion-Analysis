@@ -1,10 +1,83 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="center">
-    <h3>Python for Facebook SDK</h3>
-    <h4>Flask example</h4>
-    <div class="fb-login-button" data-size='xlarge' data-scope="public_profile">
-        Sign in
+<div class = "container">
+<nav class="navbar navbar-inverse navbar-wrapper navbar-fixed-top navbar-dark bg-primary"
+     style="height: 5vh; width: 100vw">
+    <div class="container">
+        <div class="navbar-header" style="color: #2e7eb8">
+            <a class="navbar-brand smoothScroll" href="#Home">
+                <b>FriendInNeed</b>
+            </a>
+        </div>
+            <ul class="nav navbar-nav pull-left">
+                <li class = "nav-item"><a class="smoothScroll nav-link" href="#About">About FriendInNeed.</a></li>
+                <li class = "nav-item"><a class="smoothScroll nav-link" href="#Login">Login</a></li>
+            </ul>
     </div>
-</div>
+  </nav>
+
+<section id="Home">
+    <div class="header">
+        <div class="container">
+            <div style="height: 100vh">
+                <p style="color: #003366; font-size: 48px; position: absolute; top: 45%">FriendInNeed? Friendly Indeed!</p>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="About">
+    <div class="container">
+        <div style="min-height: 95vh; padding-top: 15vh; padding-bottom: 15vh">
+            <div class="row featurette">
+                <div class="col-md-12">
+                    <h1 class="featurette-heading" style="font-size: 48px">About FriendInNeed. <span
+                            class="text-muted"></span>
+                    </h1>
+                    <p class="lead" style="font-size: 28px">
+                      Lorem ipsum dolor sit amet, quem timeam iudicabit ad duo, choro consulatu vim cu. Error propriae ne ius, quodsi habemus pri et. Ut sea vidisse legendos repudiandae, eruditi ceteros at nam. Enim civibus no mei, tota clita corpora eu pri. Vivendum iudicabit vituperata an vis.
+                      Et has nullam tibique, porro expetendis signiferumque ei usu. His ut numquam maluisset, eos utinam populo blandit ea, has an impetus commune. Dicant eripuit id sed, bonorum patrioque cu pro, usu in nostro possim aliquando. Eos sumo minimum oporteat at.
+                      Modus assentior sit eu, everti gloriatur definiebas ne est. Solum utinam cu usu, adhuc atomorum molestiae his ne, in duo suas corrumpit. Movet consulatu ut usu, illum velit ut duo, debet oportere molestiae id nam. Qui id vocent corpora, eu eum vidit commodo. Errem deserunt dissentiunt pri ut, cu vel repudiare temporibus. Noster omittantur ad cum.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <hr style="margin: 0px; padding: 0px; border-color: #604020; color: #003366">
+    </div>
+</section>
+
+<section id = "Login">
+  <div class = "container">
+    <div style="min-height: 95vh; padding-top: 30vh; padding-bottom: 30vh">
+        <div class="row featurette">
+            <div class="col-md-12">
+            <h2>Login with Facebook.</h2>
+            <div class="fb-login-button" data-size='xlarge' data-scope="public_profile">
+                Sign in
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Animated Scrolling -->
+  <script type="text/javascript">
+      $(function () {
+          $('.smoothScroll').click(function () {
+              if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                  var target = $(this.hash);
+                  target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                  if (target.length) {
+                      $('html,body').animate({
+                          scrollTop: target.offset().top
+                      }, 1000);
+                      return false;
+                  }
+              }
+          });
+      });
+  </script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+
 {% endblock %}
