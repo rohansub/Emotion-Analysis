@@ -72,8 +72,7 @@ def get_current_user():
 
             # Create the user and insert it into the database
             user = User(id=str(profile['id']), name=profile['name'],
-                        profile_url=profile['link'],
-                        access_token=result['access_token'])
+                        profile_url=profile['link'], twitter_usr = request.form['twitter_usr'])
             db.session.add(user)
         elif user.access_token != result['access_token']:
             # If an existing user, update the access token
