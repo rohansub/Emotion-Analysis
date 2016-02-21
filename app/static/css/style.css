@@ -59,6 +59,13 @@ box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.33);
   margin: 0 3%;
   text-align:center;
 }
+
+.circle-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    display: block;
+}
 .social-login a i{
   position: relative;
   float: left;
