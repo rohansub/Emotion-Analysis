@@ -5,8 +5,8 @@ from alchemyapi import AlchemyAPI
 import numpy as np
 
 #textFile_msg = ["Happy Bunnies!", "I hate life", "I love life"]
-textFile_post = [("I am okay","1235"),("I am not okay","1234"),("Hey guys!","1234")]
-textFile_tweet = [("Hey how are you?","1235"), ("I hate him", "1234"),("This is the best!","1234")]
+# textFile_post = [("I am okay","1235"),("I am not okay","1234"),("Hey guys!","1234")]
+# textFile_tweet = [("Hey how are you?","1235"), ("I hate him", "1234"),("This is the best!","1234")]
 alchemyapi = AlchemyAPI()
 
 # code for fetching text to arrays
@@ -42,7 +42,6 @@ def PostData (textFile_post):
     postAvg = (postSum/postCounter)*5.0 + 5.0
     postStdError = np.std(tempList)/float(np.sqrt(n))
     tempList = []
-    stackPost.append((postAvg,postStdError, textFile_post[len(textFile_post)-i][1],postCounter))
 
     # for i in xrange(len(stackPost)):
     #     #print('i = ',i,"out of ",len(stackPost))
