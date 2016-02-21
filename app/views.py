@@ -43,7 +43,7 @@ def confirm():
     DecAvg   = CompositeAvg(Decayed)
 
     Sent2 = "Our algorithm indicates that you are experiencing significantly negative sentiment. We advise you seek the company of friends or family and discuss factors that may be leading to such tension. If you believe you are at risk for depression, please seek the counsel of a medical professional."
-    Sent4 = "Our algorithm indicates that you are experiencing moderately negative sentiment. We advise you seek the company of friends or family, spend some time pursuing your own interests, and consider increasing relaxing activities.""
+    Sent4 = "Our algorithm indicates that you are experiencing moderately negative sentiment. We advise you seek the company of friends or family, spend some time pursuing your own interests, and consider increasing relaxing activities."
     Sent6 = "Our algorithm indicates that you are experiencing rather neutral sentiment. Consider increasing relaxing activities."
     Sent8 = "Our algorithm indicates you are experiencing rather positive sentiment. We hope you continue enjoying your experiences and pursue other enjoyable activities in the future."
     Sent10 = "Our algorithm indicates that you are experiencing highly positive sentiment! We hope you continue to enjoy your experiences and assist others who may not be as fortunate."
