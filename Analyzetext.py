@@ -65,7 +65,7 @@ def TweetData (textFile_tweet):
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
-    	    arb3 = float(unicode(response['docSentiment']['score']))
+    	           arb3 = float(unicode(response['docSentiment']['score']))
     	    #print(arb3)
             if textFile_tweet[i][1]==curDate2:
                 tweetSum += arb3
