@@ -26,8 +26,8 @@ def index():
 
 @app.route('/confirmation', methods = ['GET','POST'])
 def confirm():
-    graph = GraphAPI(access_token='CAALyYfs2z0oBAFdQK7b9sxxznSZAj57r1xVrRqa3skvHDJvtrZCZBalXlHsc5tSvTAbF8ZCvo8L2JmupPphsSWhHTeHxAXMX9k21XRRHNwi3tdwWH4VCz3kXZAyXVWn4AyoYVAygEVCBqYVNjsBSsnWT108MUfeUy2bWFaZAQkZBRFsAORmZA9lh5FlXZBRUHD2hN2ITbMwUxeAZDZD')
-    post = graph.get_object('/me/'+'posts')
+    graph = GraphAPI(access_token='CAALyYfs2z0oBAGkAVLO8cZAqZAzz5SF9ncMdQunQB2aq1HME3N2DC1iyL2QHtTW2WryHWyxhlih78uNa64kABBCM0Bg5c2C7yEEmjnRHlAibYnV4vqwNcN01VSpORHqBWTfFwXYcP6kLWB5QYsFqe7WvccNZCPkn4UJfujPMwZASeGmF3qthjBa5nYl2672ZB4Q9KpbaVoQZDZD')
+    post = graph.get_object('/me/'+'posts',since = "2016-02-20T00:00:00")
     postInfo = post['data'];
     postList = []
     for d in postInfo:
@@ -48,10 +48,24 @@ def confirm():
     Sent8 = "Our algorithm indicates you are experiencing rather positive sentiment. We hope you continue enjoying your experiences and pursue other enjoyable activities in the future."
     Sent10 = "Our algorithm indicates that you are experiencing highly positive sentiment! We hope you continue to enjoy your experiences and assist others who may not be as fortunate."
 
+    if (LastWk >= 0 and LastWk <= 2):
+        summary = Sent2
+    elif (LastWk >2 and LastWk <=4):
+        summary = Sent4
+    elif (LastWk >4 and LastWk <=6):
+        summary = Sent6
+    elif (LastWk >6 and LastWk<=8):
+        summary = Sent8
+    elif (LastWk > 8 and LastWk <=10):
+        summary = Sent10
+    else:
+        summary = "Unable to determine sentiment score."
+
     return render_template('index.html', app_id=FB_APP_ID,
                            app_name=FB_APP_NAME, user=g.user,
                            fb_values =  FB_posts, tw_values = TW_posts,
-                           overall = Decayed, week = LastWk, average = DecAvg)
+                           overall = Decayed, week = LastWk, average = DecAvg,
+                           summary = summary)
 @app.route('/logout')
 def logout():
     """Log out the user from the application.
