@@ -17,7 +17,7 @@ def PostData (textFile_post):
     postSum = 0.0
     curDate1 = textFile_post[0][1]
     for i in xrange(len(textFile_post)):
-        response = alchemyapi.sentiment('html', textFile_post[len(textFile_post)-i][0])
+        response = alchemyapi.sentiment('html', textFile_post[len(textFile_post)-i-1][0])
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
@@ -32,16 +32,17 @@ def PostData (textFile_post):
                 postAvg = (postSum/postCounter)*5.0 + 5.0
                 postStdError = np.std(tempList)/float(np.sqrt(n))
                 tempList = []
-                stackPost.append((postAvg,postStdError, textFile_post[len(textFile_post)-i+1][1],postCounter))
+                stackPost.append((postAvg,postStdError, textFile_post[len(textFile_post)-i][1],postCounter))
                 postSum = arb2
                 postCounter = 1
-                curDate1 = textFile_post[len(textFile_post)-i][1]
+                curDate1 = textFile_post[len(textFile_post)-i-1][1]
             #print(arb2*5+5)
         else:
             print('Error in sentiment analysis call: ', response['statusInfo'])
     postAvg = (postSum/postCounter)*5.0 + 5.0
     postStdError = np.std(tempList)/float(np.sqrt(n))
     tempList = []
+    stackPost.append((postAvg,postStdError, textFile_post[len(textFile_post)-i-1][1],postCounter))
 
     # for i in xrange(len(stackPost)):
     #     #print('i = ',i,"out of ",len(stackPost))
@@ -60,13 +61,13 @@ def TweetData (textFile_tweet):
     stackTweet = []
     curDate2 = textFile_tweet[0][1]
     for i in xrange(len(textFile_tweet)):
-        response = alchemyapi.sentiment('html', textFile_tweet[len(textFile_tweet)-i][0])
+        response = alchemyapi.sentiment('html', textFile_tweet[len(textFile_tweet)-i-1][0])
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
     	           arb3 = float(unicode(response['docSentiment']['score']))
     	    #print(arb3)
-            if textFile_tweet[i][1]==curDate2:
+            if textFile_tweet[len(textFile_tweet)-i-1][1]==curDate2:
                 tweetSum += arb3
                 tweetCounter += 1
                 tempList.append(arb3)
@@ -74,17 +75,17 @@ def TweetData (textFile_tweet):
                 tweetAvg = (tweetSum/tweetCounter)*5 + 5
                 tweetStdError = np.std(tempList)/float(np.sqrt(n))
                 tempList = []
-                stackTweet.append((tweetAvg, tweetStdError, textFile_tweet[len(textFile_tweet)-i+1][1],tweetCounter))
+                stackTweet.append((tweetAvg, tweetStdError, textFile_tweet[len(textFile_tweet)-i][1],tweetCounter))
                 tweetSum = arb3
                 tweetCounter = 1
-                curDate2 = textFile_tweet[len(textFile_tweet)-i][1]
+                curDate2 = textFile_tweet[len(textFile_tweet)-i-1][1]
             #print(arb3*5+5)
         else:
             print('Error in sentiment analysis call: ', response['statusInfo'])
     tweetAvg = (tweetSum/tweetCounter)*5.0 + 5.0
     tweetStdError = np.std(tempList)/float(np.sqrt(n))
     tempList = []
-    stackTweet.append((tweetAvg,tweetStdError, textFile_tweet[len(textFile_tweet)-i][1],tweetCounter))
+    stackTweet.append((tweetAvg,tweetStdError, textFile_tweet[len(textFile_tweet)-i-1][1],tweetCounter))
     # for i in xrange(len(stackTweet)):
     #     #print('i = ',i,"out of ",len(stackTweet))
     #     element = stackTweet.pop()
