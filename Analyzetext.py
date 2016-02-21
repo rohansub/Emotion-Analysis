@@ -2,60 +2,124 @@ from __future__ import print_function
 import json
 import unicodedata
 from alchemyapi import AlchemyAPI
+import numpy as np
 
-textFile_msg = ["Happy Bunnies!", "I hate life", "I love life"]
-textFile_post = ["I am okay", "I am not okay", "Hey guys!"]
-textFile_like = ["Hey how are you?", "I hate him", "This is the best!"]
+#textFile_msg = ["Happy Bunnies!", "I hate life", "I love life"]
+textFile_post = [("I am okay","1235"),("I am not okay","1234"),("Hey guys!","1234")]
+textFile_tweet = [("Hey how are you?","1235"), ("I hate him", "1234"),("This is the best!","1234")]
 alchemyapi = AlchemyAPI()
 
 # code for fetching text to arrays
 
-messageSum = 0;
-postSum = 0;
-likeSum = 0;
+def PostData (textFile_post):
+    stackPost = []
+    postCounter = 0
+    postSum = 0.0
+    curDate1 = textFile_post[0][1]
+    for i in xrange(len(textFile_post)):
+        response = alchemyapi.sentiment('html', textFile_post[len(textFile_post)-i][0])
+        if response['status'] == 'OK':
+            response['usage'] = ''
+            if 'score' in response['docSentiment']:
+    	    arb2 = float(unicode(response['docSentiment']['score']))
+    	    #print(arb2)
+            if textFile_post[i][1]==curDate1:
+                postSum += arb2
+                postCounter += 1
+                tempList.append(arb2)
+            else:
+                #print("This branch is active")
+                postAvg = (postSum/postCounter)*5.0 + 5.0
+                postStdError = np.std(tempList)/float(np.sqrt(n))
+                tempList = []
+                stackPost.append((postAvg,postStdError, textFile_post[len(textFile_post)-i+1][1],postCounter))
+                postSum = arb2
+                postCounter = 1
+                curDate1 = textFile_post[len(textFile_post)-i][1]
+            #print(arb2*5+5)
+        else:
+            print('Error in sentiment analysis call: ', response['statusInfo'])
+    postAvg = (postSum/postCounter)*5.0 + 5.0
+    postStdError = np.std(tempList)/float(np.sqrt(n))
+    tempList = []
+    stackPost.append((postAvg,postStdError, textFile_post[len(textFile_post)-i][1],postCounter))
 
-for i in xrange(len(textFile_msg)):
-    response = alchemyapi.sentiment('html', textFile_msg[i])
-    if response['status'] == 'OK':
-        response['usage'] = ''
-        if 'score' in response['docSentiment']:
-	    arb1 = float(unicode(response['docSentiment']['score']))
-	    print(arb1)	
-	    messageSum += arb1         
-    else:
-        print('Error in sentiment analysis call: ', response['statusInfo'])
-msgAvg = (messageSum/len(textFile_msg))*5 + 5
+    # for i in xrange(len(stackPost)):
+    #     #print('i = ',i,"out of ",len(stackPost))
+    #     element = stackPost.pop()
+    #     print(element)
+    # Format {Rating, StdDev, Date, Counter}
 
-for i in xrange(len(textFile_post)):
-    response = alchemyapi.sentiment('html', textFile_post[i])
-    if response['status'] == 'OK':
-        response['usage'] = ''
-        if 'score' in response['docSentiment']:
-	    arb2 = float(unicode(response['docSentiment']['score']))
-	    print(arb2)
-	    postSum += arb2         
-    else:
-        print('Error in sentiment analysis call: ', response['statusInfo'])
-postAvg = (postSum/len(textFile_post))*5 + 5
-
-for i in xrange(len(textFile_like)):
-    response = alchemyapi.sentiment('html', textFile_like[i])
-    if response['status'] == 'OK':
-        response['usage'] = ''
-        if 'score' in response['docSentiment']:
-	    arb3 = float(unicode(response['docSentiment']['score']))
-	    print(arb3)
-	    likeSum += arb3         
-    else:
-        print('Error in sentiment analysis call: ', response['statusInfo'])
-likeAvg = (likeSum/len(textFile_like))*5 + 5
-
-print(msgAvg , ', ' , postAvg , ', ' , likeAvg , '.')
-
-weightedSum = 0.75*msgAvg + 0.2*postAvg + 0.05*likeAvg
-print(weightedSum)
+    return stackPost
 
 
+def TweetData (textFile_tweet):
+    tweetCounter = 0
+    tweetSum = 0.0
+    tweetStdDev = 0.0
+    tempList = []
+    stackTweet = []
+    curDate2 = textFile_tweet[0][1]
+    for i in xrange(len(textFile_tweet)):
+        response = alchemyapi.sentiment('html', textFile_tweet[len(textFile_tweet)-i][0])
+        if response['status'] == 'OK':
+            response['usage'] = ''
+            if 'score' in response['docSentiment']:
+    	    arb3 = float(unicode(response['docSentiment']['score']))
+    	    #print(arb3)
+            if textFile_tweet[i][1]==curDate2:
+                tweetSum += arb3
+                tweetCounter += 1
+                tempList.append(arb3)
+            else:
+                tweetAvg = (tweetSum/tweetCounter)*5 + 5
+                tweetStdError = np.std(tempList)/float(np.sqrt(n))
+                tempList = []
+                stackTweet.append((tweetAvg, tweetStdError, textFile_tweet[len(textFile_tweet)-i+1][1],tweetCounter))
+                tweetSum = arb3
+                tweetCounter = 1
+                curDate2 = textFile_tweet[len(textFile_tweet)-i][1]
+            #print(arb3*5+5)
+        else:
+            print('Error in sentiment analysis call: ', response['statusInfo'])
+    tweetAvg = (tweetSum/tweetCounter)*5.0 + 5.0
+    tweetStdError = np.std(tempList)/float(np.sqrt(n))
+    tempList = []
+    stackTweet.append((tweetAvg,tweetStdError, textFile_tweet[len(textFile_tweet)-i][1],tweetCounter))
+    # for i in xrange(len(stackTweet)):
+    #     #print('i = ',i,"out of ",len(stackTweet))
+    #     element = stackTweet.pop()
+    #     print(element)
+    # Format {Rating, StdDev, Date, Counter}
+    return stackTweet
 
+def WeightedData (FbData, TwData):
+    WData = []
+    index = 0
+    for i in xrange (0,len(FbData)):
+        for j in xrange (0, len(TwData)):
+            if (FbData[i][2] == TwData[j][2]):
+                Nt = TwData[j][3]
+                Nf = FbData[i][3]
+                TwWeight =  (float(Nt))/(Nt+Nf);
+                FbWeight =  (float(Nf))/(Nf+Nt);
+                WData [i][0] = TwWeight * TwData[j][0] + FbWeight * FbData[i][0]
+                WData [i][1] = (FbData[i][1] + TWData[j][1])/2.0
+                WData [i][2] = FbData[i][2]
+                break;
+        if (FbData[i][2] < TwData[j][2]):
+            WData.append(FbData[i])
+        else:
+            WData.append(TwData[i])
+    return WData
 
+def DecayData (WData):
+    DecData = WData
+    for i in xrange (4, len(WData)):
+        maxDecError = max(WData[i][1], WData[i-1][1], WData[i-2][1], WData[i-3][1], WData[i-4][1])
+        DecData[i][0] = WData[i][0] * 0.6 + WData[i-1][0] * 0.2 + WData[i-2][0] * 0.1 + WData[i-3][0] *0.05 + WData[i-4][0] *0.05
+        DecData[i][1] = maxDecError;
 
+    return DecData
+
+    #Return Format {{Decayed Rating, Std Error, Date, Message Count}}
