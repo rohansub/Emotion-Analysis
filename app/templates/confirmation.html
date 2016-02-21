@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div align = "left">
+
+
+
+
+<section id = "Login">
+    <div style="min-height: 95vh; padding-top: 30vh; padding-bottom: 30vh">
+<div class="login-box">
+  <div class="lb-header">
+    <a href="#Login" class="active" id="login-box-link">Login</a>
+  </div>
+  <form class="email-login" method="post" action="/confirmation">
+    <p>Enter your Twitter info to continue</p>
+    <input type="TwitterHandle" placeholder="Twitter Username" name = "twitter_usr"/>
+    <button type = "submit">Continue</button>
+    <a href="/logout" id="logout">Log out</a>
+  </form>
+  </div>
+  <script>
+      document.getElementById('logout').onclick = function() {
+          FB.logout(function(response) { });
+      };
+  </script>
+</div>
+</div>
+</section>
+</div>
+
+
+{% endblock %}

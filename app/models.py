@@ -13,4 +13,3 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
     profile_url = db.Column(db.String, nullable=False)
     access_token = db.Column(db.String, nullable=False)
-    twitter_usr = db.Column(db.String, nullable=False)

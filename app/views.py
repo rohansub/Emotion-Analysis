@@ -17,16 +17,25 @@ def index():
     # If a user was set in the get_current_user function before the request,
     # the user is logged in.
     if g.user:
-        return render_template('index.html', app_id=FB_APP_ID,
+        return render_template('confirmation.html', app_id=FB_APP_ID,
                                app_name=FB_APP_NAME, user=g.user)
     # Otherwise, a user is not logged in.
     return render_template('login.html', app_id=FB_APP_ID, name=FB_APP_NAME)
 
-
+@app.route('/confirmation', methods = ['GET','POST'])
+def confirm():
+    graph = GraphAPI(access_token='CAALyYfs2z0oBAFdQK7b9sxxznSZAj57r1xVrRqa3skvHDJvtrZCZBalXlHsc5tSvTAbF8ZCvo8L2JmupPphsSWhHTeHxAXMX9k21XRRHNwi3tdwWH4VCz3kXZAyXVWn4AyoYVAygEVCBqYVNjsBSsnWT108MUfeUy2bWFaZAQkZBRFsAORmZA9lh5FlXZBRUHD2hN2ITbMwUxeAZDZD')
+    post = graph.get_object('/me/'+'posts')
+    postInfo = post['data'];
+    postList = []
+    for d in postInfo:
+        postList.append((d['message'], d['created_time']))
+    tweetList = mineTweets(request.form['twitter_usr'])
+    return render_template('index.html', app_id=FB_APP_ID,
+                           app_name=FB_APP_NAME, user=g.user)
 @app.route('/logout')
 def logout():
     """Log out the user from the application.
-
     Log out the user from the application by removing them from the
     session.  Note: this does not log the user out of Facebook - this is done
     by the JavaScript SDK.
@@ -38,11 +47,9 @@ def logout():
 @app.before_request
 def get_current_user():
     """Set g.user to the currently logged in user.
-
     Called before each request, get_current_user sets the global g.user
     variable to the currently logged in user.  A currently logged in user is
     determined by seeing if it exists in Flask's session dictionary.
-
     If it is the first time the user is logging into this application it will
     create the user and insert it into the database.  If the user is not logged
     in, None will be set to g.user.
@@ -72,18 +79,13 @@ def get_current_user():
 
             # Create the user and insert it into the database
             user = User(id=str(profile['id']), name=profile['name'],
-                        profile_url=profile['link'], twitter_usr = request.form['twitter_usr'])
+                        profile_url=profile['link'],
+                        access_token=result['access_token'])
             db.session.add(user)
         elif user.access_token != result['access_token']:
             # If an existing user, update the access token
             user.access_token = result['access_token']
-        graph = GraphAPI(access_token='CAALyYfs2z0oBAN6TdycYOUozdZB4uCH7pi3sfSI7EZCHaMUhusVfWZAU6UZCezTGa5Hew8x0F9uRPHC2IIWZBjbDbZAZBnT2oEKPdo819B18nZBTUrglDS17xdWD0cWYVmNA3NGOcMPeI3zOMrIkdCD08ZAbMKWV7yZAOZBd9wX5xtoP8myOikN4yme')
-        post = graph.get_object('/me/'+'posts')
-        postInfo = post['data'];
-        postList = []
-        for d in postInfo:
-            postList.append((d['message'], d['created_time']))
-        tweetList = mineTweets('djkhaled')
+
         # Add the user to the current session
         session['user'] = dict(name=user.name, profile_url=user.profile_url,
                                id=user.id, access_token=user.access_token)
