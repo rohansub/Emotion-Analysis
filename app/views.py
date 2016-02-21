@@ -26,9 +26,11 @@ def index():
 
 @app.route('/confirmation', methods = ['GET','POST'])
 def confirm():
-    graph = GraphAPI(access_token='CAALyYfs2z0oBAGkAVLO8cZAqZAzz5SF9ncMdQunQB2aq1HME3N2DC1iyL2QHtTW2WryHWyxhlih78uNa64kABBCM0Bg5c2C7yEEmjnRHlAibYnV4vqwNcN01VSpORHqBWTfFwXYcP6kLWB5QYsFqe7WvccNZCPkn4UJfujPMwZASeGmF3qthjBa5nYl2672ZB4Q9KpbaVoQZDZD')
+    g.user = session.get('user')
+    graph = GraphAPI(g.user['access_token'])
     post = graph.get_object('/me/'+'posts',since = "2016-02-20T00:00:00")
     postInfo = post['data'];
+    print postInfo
     postList = []
     for d in postInfo:
         postList.append((d['message'], d['created_time']))
@@ -38,7 +40,10 @@ def confirm():
     TW_posts = TweetData(tweetList)
 
     WD_posts = WeightedData(FB_posts, TW_posts)
+    print(WD_posts)
     Decayed  = DecayData(WD_posts)
+    print("Return Format {{Decayed Rating, Std Error}")
+    print(Decayed)
     LastWk   = CompositeWk(Decayed)
     DecAvg   = CompositeAvg(Decayed)
 

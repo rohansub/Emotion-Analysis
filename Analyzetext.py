@@ -16,34 +16,45 @@ def PostData (textFile_post):
     tempList = []
     postCounter = 0
     postSum = 0.0
-    curDate1 = textFile_post[0][1]
-    for i in xrange(len(textFile_post)):
-        response = alchemyapi.sentiment('html', textFile_post[len(textFile_post)-i-1][0])
+    arb2 = 0
+    curDate1 = textFile_post[len(textFile_post)-1][1]
+    print('Facebook Time')
+    for i in reversed(xrange(len(textFile_post))):
+        response = alchemyapi.sentiment('html', textFile_post[i][0].encode('ascii','ignore'))
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
     	           arb2 = float(unicode(response['docSentiment']['score']))
-    	    #print(arb2)
+    	    #print(textFile_post[i][1])
+            #print(curDate1)
             if textFile_post[i][1]==curDate1:
                 postSum += arb2
                 postCounter += 1
+                #print(postCounter)
                 tempList.append(arb2)
             else:
                 #print("This branch is active")
+                if postCounter == 0:
+                    postCounter == 1;
                 postAvg = (postSum/postCounter)*5.0 + 5.0
+                print(postAvg)
                 postStdError = np.std(tempList)/float(np.sqrt(len(tempList)))
                 tempList = []
-                stackPost.append((postAvg,postStdError, textFile_post[len(textFile_post)-i][1],postCounter))
+                if i == len(textFile_post)-1:
+                    stackPost.append((postAvg,postStdError, textFile_post[i][1],postCounter))
+                else:
+                    stackPost.append((postAvg,postStdError, textFile_post[i+1][1],postCounter))
                 postSum = arb2
                 postCounter = 1
-                curDate1 = textFile_post[len(textFile_post)-i-1][1]
+                curDate1 = textFile_post[i][1]
             #print(arb2*5+5)
         else:
             print('Error in sentiment analysis call: ', response['statusInfo'])
     postAvg = (postSum/postCounter)*5.0 + 5.0
+    print(postAvg)
     postStdError = np.std(tempList)/float(np.sqrt(len(tempList)))
     tempList = []
-    stackPost.append((postAvg,postStdError, textFile_post[len(textFile_post)-i-1][1],postCounter))
+    stackPost.append((postAvg,postStdError, textFile_post[i][1],postCounter))
 
     # for i in xrange(len(stackPost)):
     #     #print('i = ',i,"out of ",len(stackPost))
@@ -60,33 +71,43 @@ def TweetData (textFile_tweet):
     tweetStdDev = 0.0
     tempList = []
     stackTweet = []
-    curDate2 = textFile_tweet[0][1]
-    for i in xrange(len(textFile_tweet)):
-        response = alchemyapi.sentiment('html', textFile_tweet[len(textFile_tweet)-i-1][0])
+    curDate2 = textFile_tweet[len(textFile_tweet)-1][1]
+    arb3 = 0
+    print('Twitter Time')
+    for i in reversed(xrange(len(textFile_tweet))):
+        response = alchemyapi.sentiment('html', textFile_tweet[i][0].encode('ascii','ignore'))
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
     	           arb3 = float(unicode(response['docSentiment']['score']))
     	    #print(arb3)
-            if textFile_tweet[len(textFile_tweet)-i-1][1]==curDate2:
+            if textFile_tweet[i][1]==curDate2:
                 tweetSum += arb3
                 tweetCounter += 1
+                #print(tweetCounter)
                 tempList.append(arb3)
             else:
+                if tweetCounter == 0:
+                    tweetCounter == 1;
                 tweetAvg = (tweetSum/tweetCounter)*5 + 5
+                print(tweetAvg)
                 tweetStdError = np.std(tempList)/float(np.sqrt(len(tempList)))
                 tempList = []
-                stackTweet.append((tweetAvg, tweetStdError, textFile_tweet[len(textFile_tweet)-i][1],tweetCounter))
+                if i == len(textFile_tweet)-1:
+                    stackTweet.append((tweetAvg,tweetStdError, textFile_tweet[i][1],tweetCounter))
+                else:
+                    stackTweet.append((tweetAvg,tweetStdError, textFile_tweet[i+1][1],tweetCounter))
                 tweetSum = arb3
                 tweetCounter = 1
-                curDate2 = textFile_tweet[len(textFile_tweet)-i-1][1]
+                curDate2 = textFile_tweet[i][1]
             #print(arb3*5+5)
         else:
             print('Error in sentiment analysis call: ', response['statusInfo'])
     tweetAvg = (tweetSum/tweetCounter)*5.0 + 5.0
-    tweetStdError = np.std(tempList)/float(np.sqrt(n))
+    print(tweetAvg)
+    tweetStdError = np.std(tempList)/float(np.sqrt(len(tempList)))
     tempList = []
-    stackTweet.append((tweetAvg,tweetStdError, textFile_tweet[len(textFile_tweet)-i-1][1],tweetCounter))
+    stackTweet.append((tweetAvg,tweetStdError, textFile_tweet[i][1],tweetCounter))
     # for i in xrange(len(stackTweet)):
     #     #print('i = ',i,"out of ",len(stackTweet))
     #     element = stackTweet.pop()
@@ -97,6 +118,7 @@ def TweetData (textFile_tweet):
 def WeightedData (FbData, TwData):
     WData = []
     index = 0
+    print('Weighted Data format: Rating, StdErr, Date')
     for i in xrange (0,len(FbData)):
         for j in xrange (0, len(TwData)):
             if (FbData[i][2] == TwData[j][2]):
@@ -112,14 +134,16 @@ def WeightedData (FbData, TwData):
             WData.append(FbData[i])
         else:
             WData.append(TwData[i])
+    #print(WData)
     return WData
 
 def DecayData (WData):
-    DecData = WData
+    DecData = []
     for i in xrange (4, len(WData)):
         maxDecError = max(WData[i][1], WData[i-1][1], WData[i-2][1], WData[i-3][1], WData[i-4][1])
-        DecData[i][0] = WData[i][0] * 0.6 + WData[i-1][0] * 0.2 + WData[i-2][0] * 0.1 + WData[i-3][0] *0.05 + WData[i-4][0] *0.05
-        DecData[i][1] = maxDecError;
+        wAvg = WData[i][0] * 0.6 + WData[i-1][0] * 0.2 + WData[i-2][0] * 0.1 + WData[i-3][0] *0.05 + WData[i-4][0] *0.05
+        wErr = maxDecError
+        DecData.append((wAvg,wErr))
 
     return DecData
 
@@ -137,7 +161,8 @@ def CompositeAvg (DecData):
 def CompositeWk (DecData):
     AvgScore = 0
     sum = 0;
-    for i in xrange (len(DecData)-5, len(DecData)):
+    for i in xrange (0, len(DecData)):
         sum += DecData[i][0]
-    AvgScore = float(sum)/5
+        print('Sum: ', sum)
+    AvgScore = float(sum)/len(DecData)
     return AvgScore
