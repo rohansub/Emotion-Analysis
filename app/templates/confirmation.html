@@ -5,16 +5,18 @@
 
 
 
-<section id = "Login">
+<section id = "Login" style="background-color: #ffcc99">
     <div style="min-height: 95vh; padding-top: 30vh; padding-bottom: 30vh">
 <div class="login-box">
   <div class="lb-header">
-    <a href="#Login" class="active" id="login-box-link">Login</a>
+    <a href="#Login" class="active" id="login-box-link" style="color: #000000">More Info</a>
   </div>
   <form class="email-login" method="post" action="/confirmation">
     <p>Enter your Twitter info to continue</p>
     <input type="TwitterHandle" placeholder="Twitter Username" name = "twitter_usr"/>
     <button type = "submit">Continue</button>
+    <br>
+    <br>
     <a href="/logout" id="logout">Log out</a>
   </form>
   </div>

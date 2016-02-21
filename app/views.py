@@ -6,6 +6,8 @@ from models import User
 
 from TweetMiner import mineTweets
 
+from Analyzetext import PostData, TweetData, WeightedData, DecayData, CompositeWk, CompositeAvg
+
 # Facebook app details
 FB_APP_ID = '829452593844042'
 FB_APP_NAME = 'FriendInNeed'
@@ -31,8 +33,25 @@ def confirm():
     for d in postInfo:
         postList.append((d['message'], d['created_time']))
     tweetList = mineTweets(request.form['twitter_usr'])
+
+    FB_posts = PostData(postList)
+    TW_posts = TweetData(tweetList)
+
+    WD_posts = WeightedData(FB_posts, TW_posts)
+    Decayed  = DecayData(WD_posts)
+    LastWk   = CompositeWk(Decayed)
+    DecAvg   = CompositeAvg(Decayed)
+
+    Sent2 = "Our algorithm indicates that you are experiencing significantly negative sentiment. We advise you seek the company of friends or family and discuss factors that may be leading to such tension. If you believe you are at risk for depression, please seek the counsel of a medical professional."
+    Sent4 = "Our algorithm indicates that you are experiencing moderately negative sentiment. We advise you seek the company of friends or family, spend some time pursuing your own interests, and consider increasing relaxing activities."
+    Sent6 = "Our algorithm indicates that you are experiencing rather neutral sentiment. Consider increasing relaxing activities."
+    Sent8 = "Our algorithm indicates you are experiencing rather positive sentiment. We hope you continue enjoying your experiences and pursue other enjoyable activities in the future."
+    Sent10 = "Our algorithm indicates that you are experiencing highly positive sentiment! We hope you continue to enjoy your experiences and assist others who may not be as fortunate."
+
     return render_template('index.html', app_id=FB_APP_ID,
-                           app_name=FB_APP_NAME, user=g.user)
+                           app_name=FB_APP_NAME, user=g.user,
+                           fb_values =  FB_posts, tw_values = TW_posts,
+                           overall = Decayed, week = LastWk, average = DecAvg)
 @app.route('/logout')
 def logout():
     """Log out the user from the application.

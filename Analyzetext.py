@@ -21,7 +21,7 @@ def PostData (textFile_post):
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
-    	    arb2 = float(unicode(response['docSentiment']['score']))
+    	           arb2 = float(unicode(response['docSentiment']['score']))
     	    #print(arb2)
             if textFile_post[i][1]==curDate1:
                 postSum += arb2
@@ -65,7 +65,7 @@ def TweetData (textFile_tweet):
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
-    	    arb3 = float(unicode(response['docSentiment']['score']))
+    	           arb3 = float(unicode(response['docSentiment']['score']))
     	    #print(arb3)
             if textFile_tweet[i][1]==curDate2:
                 tweetSum += arb3
@@ -122,4 +122,21 @@ def DecayData (WData):
 
     return DecData
 
+
     #Return Format {{Decayed Rating, Std Error, Date, Message Count}}
+
+def CompositeAvg (DecData):
+    AvgScore = 0
+    sum = 0;
+    for i in xrange (0, len(DecData)):
+        sum += DecData[i][0]
+    AvgScore = float(sum)/len(DecData)
+    return AvgScore
+
+def CompositeWk (DecData):
+    AvgScore = 0
+    sum = 0;
+    for i in xrange (len(DecData)-5, len(DecData)):
+        sum += DecData[i][0]
+    AvgScore = float(sum)/5
+    return AvgScore
