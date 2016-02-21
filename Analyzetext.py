@@ -21,7 +21,7 @@ def PostData (textFile_post):
         if response['status'] == 'OK':
             response['usage'] = ''
             if 'score' in response['docSentiment']:
-    	    arb2 = float(unicode(response['docSentiment']['score']))
+    	           arb2 = float(unicode(response['docSentiment']['score']))
     	    #print(arb2)
             if textFile_post[i][1]==curDate1:
                 postSum += arb2
