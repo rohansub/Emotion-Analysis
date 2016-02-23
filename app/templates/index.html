@@ -2,29 +2,41 @@
 {% block content %}
 <!--Available Variables:
   fb_values, tw_values, overall (Decayed), week, average, summary, name-->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+
 <section id = "profile">
-  <div class = 'row'>
-    <div class = "col-md-4">
+  <div class = 'row' style="padding-top: 5vh">
+    <div class = "col-md-4 col-md-push-1">
       <div class='circle-image'
            style="background-image: url(https://graph.facebook.com/{{ user['id'] }}/picture?type=large);
                    margin-left: auto; margin-right: auto;">
     </div>
-    <div class = 'col-md-8 col-md-push-4'
-        <p> <h1>Hello, {{ user['name'] }}.</h1>
+  </div>
+    <div class = 'col-md-8 col-md-push-1'
+        <p style = "padding-top: 5vh"> <h1>Hello, {{ user['name'] }}.</h1></p>
+        <a href="/logout" id="logout">Log out</a>
+      </div>
+    </div>
 </section>
 
-<section id = "Summary" align = "center">
+<section id = "Summary">
+  <div class="row featurette" style="padding-top: 5vh">
+      <h1 class="featurette-heading col-md-8 col-md-push-2" style="font-size:48px">Summary.</h1>
+    </div>
   <div class="row featurette">
-      <h1 class="featurette-heading col-md-7" style="font-size:48px">Summary.</h1>
-  </div>
-  <div class="row" style="padding-bottom: 2vh">
-      <p style="font-size: 28px;font-weight: bold;"> Sentiment Rating: <span class = "text-muted">{{LastWk}}</span
+      <p style="font-size: 28px;font-weight: bold;" class="featurette-heading col-md-7 col-md-push-3"> Sentiment Rating:
+        <span class = "text-muted">{{week}}</span>
           <br>
           <span style="font-size:18px; font-weight:normal">{{summary}}</span>
+          <br>
       </p>
-    </div>
+  </div>
+</section>
 
-<a href="/logout" id="logout">Log out</a>
+
 <script>
     document.getElementById('logout').onclick = function() {
         FB.logout(function(response) { });
